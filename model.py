@@ -17,7 +17,7 @@ class TextVectorizer:
             self.vectorizer = TfidfVectorizer(ngram_range=ngram_range)
         else:
             print('model is not valid')
-            exit()
+            exit(1)
 
         self.knn = None
         self.nlp = spacy.load('en_core_web_sm')
@@ -110,9 +110,12 @@ if __name__ == '__main__':
 
     # train_only()
 
-    vect = TextVectorizer('tfidf','phrase',ngram=3)
+    # vect = TextVectorizer('tfidf','paragraph',ngram=3)
+    vect = TextVectorizer('tfidf','section',ngram=3)
+    # vect = TextVectorizer('tfidf','phrase',ngram=3)
+
     vect.load()
     import json
-    query = vect.labels[54].split("]",1)[1]
+    query = vect.labels[0].split("]",1)[1]
     res = vect.predict(query)
     print(json.dumps(res,indent=4))
