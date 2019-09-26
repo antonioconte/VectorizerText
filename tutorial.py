@@ -11,13 +11,18 @@ from utils.metrics import metric
 
 
 k = '1'
-t = 'section'
+t = 'phrase'
 path_data = '/home/anto/Scrivania/Tesi/testing/processed_data/' + t + '_' + k
 with open(path_data, 'rb') as handle:
     data = pickle.load(handle)
 
 X = [" ".join(item['data']) for item in data]
 Y = [item['tag'] for item in data]
+for i in range(550,2000):
+    print(">",Y[i])
+    print(">",X[i])
+    print("\n ==== \n")
+exit()
 
 vectorizer = TfidfVectorizer(ngram_range=(3,3))
 matrix = vectorizer.fit_transform(X)
