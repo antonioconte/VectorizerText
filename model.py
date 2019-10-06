@@ -28,7 +28,7 @@ class TextVectorizer:
             data = pickle.load(handle)
 
         # vectorizer prende in input una stringa e non una lista di token
-        self.data_train = [ item['normalized'] for item in data]
+        #self.data_train = [ item['normalized'] for item in data]
         self.labels = [item['tag'] for item in data]
 
         self.path_knn = config.path_knn.format(model_type,part_type,ngram)
@@ -57,6 +57,13 @@ class TextVectorizer:
         print(self.vectorizer)
 
     def train(self):
+        path_data = config.path_data + self.part_type + '_3'
+        with open(path_data, 'rb') as handle:
+            data = pickle.load(handle)
+
+        # vectorizer prende in input una stringa e non una lista di token
+        self.data_train = [item['normalized'] for item in data]
+
         print("==== TRAINING [ model = {}, part_type = {} ]".format(self.model_type,self.part_type))
         matrix = self.vectorizer.fit_transform(self.data_train)
         self.l_sign = len(self.vectorizer.get_feature_names())
