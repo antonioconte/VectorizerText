@@ -24,10 +24,11 @@ class TextVectorizer:
         self.normalizer = TextPipeline(self.nlp)
 
         # sempre k ==  1 in quanto la divisone in ngramm viene fatta da vectorizer
-        path_data = config.path_data + self.part_type + '_1'
+        path_data = config.path_data + self.part_type + '_3'
         with open(path_data, 'rb') as handle:
             data = pickle.load(handle)
-        self.data_train =  [" ".join(item['data']) for item in data]
+
+        self.data_train = [ item['normalized'] for item in data]
         self.labels = [item['tag'] for item in data]
 
         self.path_knn = config.path_knn.format(model_type,part_type,ngram)
@@ -76,7 +77,6 @@ class TextVectorizer:
         query_norm = self.normalizer.convert(query, divNGram=False)
         query_vec = self.vectorizer.transform([query_norm])
 
-        print("--->",len(query_vec.toarray()[0]))
         dist, idx = self.knn.kneighbors(query_vec)
         idx = idx[0]
 
@@ -109,13 +109,13 @@ def train_only():
 if __name__ == '__main__':
 
     # train_only()
-
+    # exit()
     # vect = TextVectorizer('tfidf','paragraph',ngram=3)
     vect = TextVectorizer('tfidf','section',ngram=3)
     # vect = TextVectorizer('tfidf','phrase',ngram=3)
 
     vect.load()
     import json
-    query = vect.labels[0].split("]",1)[1]
+    query = vect.labels[2014].split("]",1)[1]
     res = vect.predict(query)
     print(json.dumps(res,indent=4))
