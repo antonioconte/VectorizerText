@@ -23,11 +23,11 @@ class TextVectorizer:
         self.nlp = spacy.load('en_core_web_sm')
         self.normalizer = TextPipeline(self.nlp)
 
-        # sempre k ==  1 in quanto la divisone in ngramm viene fatta da vectorizer
         path_data = config.path_data + self.part_type + '_3'
         with open(path_data, 'rb') as handle:
             data = pickle.load(handle)
 
+        # vectorizer prende in input una stringa e non una lista di token
         self.data_train = [ item['normalized'] for item in data]
         self.labels = [item['tag'] for item in data]
 
